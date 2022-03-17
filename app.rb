@@ -4,6 +4,7 @@ require './lib/catalogue.rb'
 
 
 class BookmarkManager < Sinatra::Base
+
   configure :development do
     register Sinatra::Reloader
   end
