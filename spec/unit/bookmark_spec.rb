@@ -1,18 +1,21 @@
 require 'bookmark'
 
 describe Bookmark do
-  it "contains a list of websites" do
+
+  it ".all should return a list of bookmarks" do
+    connection = PG.connect(dbname: 'bookmark_manager_test')
+
+    Bookmark.create(url: "http://www.makersacademy.com", title: "Makers Academy")
+  end
+
+  it ".create should save the url and title for a bookmark" do
 
     connection = PG.connect(dbname: 'bookmark_manager_test')
 
-    Bookmark.create('http://www.makersacademy.com/')
-    Bookmark.create('http://www.destroyallsoftware.com')
-    Bookmark.create('http://www.google.com/')
+    bookmarks = Bookmark.create(url: 'http://www.makersacademy.com/', title: 'Makers').first
 
-    bookmarks = Bookmark.all
-    expect(bookmarks).to include "http://www.makersacademy.com/"
-    expect(bookmarks).to include "http://www.destroyallsoftware.com"
-    expect(bookmarks).to include "http://www.google.com/"
+    expect(bookmarks['url']).to eq("http://www.makersacademy.com/")
+    expect(bookmarks['title']).to eq("Makers")
   end
 
 end
