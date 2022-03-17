@@ -1,9 +1,13 @@
 require 'pg'
 
 class Bookmark
-  # def initialize
-  #   @bookmarks = ["https://github.com/makersacademy", "https://http.cat/", "https://www.youtube.com/"]
-  # end
+  attr_reader :id, :url, :title
+
+  def initialize(id:, url:, title:)
+    @id = id
+    @url = url
+    @title = title
+  end
 
   def self.all
     if ENV['ENVIRONMENT'] == 'test'
@@ -13,7 +17,7 @@ class Bookmark
     end
 
     result = connection.exec('SELECT * FROM bookmarks')
-    result.map { |bookmark| {bookmark['url'] => bookmark['title']} }
+    result.map { |bookmark| Bookmark.new(id: bookmark['id'], url: bookmark['url'], title: bookmark['title']) }
   end
 
   def self.create(url:, title:)
@@ -23,7 +27,8 @@ class Bookmark
       connection = PG.connect(dbname: 'bookmark_manager')
     end
 
-    connection.exec("INSERT INTO bookmarks (url, title) VALUES ('#{url}','#{title}') RETURNING id, url, title")
+    result = connection.exec("INSERT INTO bookmarks (url, title) VALUES ('#{url}','#{title}') RETURNING id, url, title")
 
+    Bookmark.new(id: result[0]['id'], title: result[0]['title'], url: result[0]['url'])
   end
 end

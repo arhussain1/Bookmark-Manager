@@ -1,14 +1,11 @@
 Here is a list of your bookmarks
-
-
 <ul>
-  <% @bookmarks.each do |hash| %> 
-    <% hash.each do |url, title| %>
-    <li> <a href="<%=url%>"><%=title%></a> </li>
-
-    <%end%>
-  <% end %>
+<% @bookmarks.each do |bookmark| %>
+ <li><a href="<%=bookmark.url%>"><%=bookmark.title%></a></li>
+<%end%>
 </ul>
+
+
 <form name = "create_bookmark" action = "/new_bookmark" method = "post">
   <input type = "text" name = "new_url" placeholder = "add url here">
   <input type = "text" name = "new_title" placeholder = "add title here">
