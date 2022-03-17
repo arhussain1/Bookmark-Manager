@@ -12,4 +12,14 @@ RSpec.feature "home_page", type: :feature do
     expect(page).to have_content("Here is a list of your bookmarks")
   end
 
+  scenario "adding a new bookmark should show the added URL to the list of bookmarks on /bookmarks" do
+    visit '/'
+    sign_in
+
+    fill_in 'new_bookmark', with: 'https://www.london.com'
+    click_on 'Add'
+
+    expect(page).to have_content("https://www.london.com")
+  end
+
 end

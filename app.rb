@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
-require './lib/catalogue.rb'
+require './lib/bookmark.rb'
 
 
 class BookmarkManager < Sinatra::Base
@@ -22,9 +22,17 @@ class BookmarkManager < Sinatra::Base
   end
 
   get '/bookmarks' do
-    @bookmarks = Catalogue.all
+    @bookmarks = Bookmark.all
     erb :bookmarks
 
+  end
+
+  post "/new_bookmark" do
+    @url = params[:new_bookmark]
+
+    Bookmark.create(@url)
+
+    redirect :bookmarks
   end
   
   # dont delete this
